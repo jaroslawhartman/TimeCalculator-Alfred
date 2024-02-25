@@ -9,9 +9,9 @@ Below list of requirements and design considerations
 
 ## Frontend
 
-Workflow for Alfred 5. Project:
+Workflow for Alfred 5.
 
-![alt text](img/Project.png)
+![alt text](img/Usage1.png)
 
 ## Backend
 
