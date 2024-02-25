@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>td.jhartman.pl</string>
+	<key>connections</key>
+	<dict>
+		<key>16039760-F173-4AB8-9C73-DA7401D5DE23</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>959D4A30-8309-40AB-9C18-202E9DE1AFC2</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>8BDD4CCF-4D55-4ABC-83AC-680D362D12B7</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>16039760-F173-4AB8-9C73-DA7401D5DE23</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>959D4A30-8309-40AB-9C18-202E9DE1AFC2</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>0208042E-BB77-4369-8A05-416BE601F18B</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+	</dict>
+	<key>createdby</key>
+	<string>Jarek Hartman</string>
+	<key>description</key>
+	<string>A difference between two points in time</string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>Time and Date difference</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>alfredfiltersresults</key>
+				<false/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttreatemptyqueryasnil</key>
+				<true/>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
+				<key>argumenttype</key>
+				<integer>1</integer>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>keyword</key>
+				<string>{var:search_keyword}</string>
+				<key>queuedelaycustom</key>
+				<integer>3</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<true/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>1</integer>
+				<key>runningsubtext</key>
+				<string></string>
+				<key>script</key>
+				<string>#
+# Alfred Script Filter JSON format
+#
+# This example demonstrates all fields available for populating results.
+#
+# For an in-depth explanation, use the (?) help button to the bottom left.
+#
+
+cat &lt;&lt; EOB
+{"items": [
+
+	{
+		"uid": "diff 1",
+		"title": "Time difference 1",
+		"subtitle": "&lt;d&gt; days, &lt;h&gt; hours, &lt;m&gt; minutes, and &lt;s&gt; seconds"
+	},
+	{
+		"uid": "diff 2",
+		"title": "Time difference 2",
+		"subtitle": "&lt;d.dddd&gt; days"
+	},
+	{
+		"uid": "diff 3",
+		"title": "Time difference 3",
+		"subtitle": "&lt;h.hhh&gt; hours"
+	},
+	{
+		"uid": "diff 4",
+		"title": "Time difference 4",
+		"subtitle": "&lt;m.mmm&gt; minutes"
+	},
+	{
+		"uid": "diff 5",
+		"title": "Time difference 5",
+		"subtitle": "&lt;s&gt; seconds"
+	}
+]}
+EOB</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>subtext</key>
+				<string>A time difference between two points in time</string>
+				<key>title</key>
+				<string>Time difference</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>8BDD4CCF-4D55-4ABC-83AC-680D362D12B7</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>script</key>
+				<string>query=$1
+
+#
+# Alfred Script Filter JSON format
+#
+# This example demonstrates all fields available for populating results.
+#
+# For an in-depth explanation, use the (?) help button to the bottom left.
+#
+
+cat &lt;&lt; EOB
+{"items": [
+
+	{
+		"uid": "desktop",
+		"type": "file",
+		"title": "Desktop",
+		"subtitle": "~/Desktop",
+		"arg": "~/Desktop",
+		"autocomplete": "Desktop",
+		"icon": {
+			"type": "fileicon",
+			"path": "~/Desktop"
+		}
+	},
+
+	{
+		"valid": false,
+		"uid": "flickr",
+		"title": "Flickr",
+		"icon": {
+			"path": "flickr.png"
+		}
+	},
+
+	{
+		"uid": "image",
+		"type": "file",
+		"title": "My holiday photo",
+		"subtitle": "~/Pictures/My holiday photo.jpg",
+		"autocomplete": "My holiday photo",
+		"icon": {
+			"type": "filetype",
+			"path": "public.jpeg"
+		}
+	},
+
+	{
+		"valid": false,
+		"uid": "alfredapp",
+		"title": "Alfred Website",
+		"subtitle": "https://www.alfredapp.com/",
+		"arg": "alfredapp.com",
+		"autocomplete": "Alfred Website",
+		"quicklookurl": "https://www.alfredapp.com/",
+		"mods": {
+			"alt": {
+				"valid": true,
+				"arg": "alfredapp.com/powerpack",
+				"subtitle": "https://www.alfredapp.com/powerpack/"
+			},
+			"cmd": {
+				"valid": true,
+				"arg": "alfredapp.com/powerpack/buy/",
+				"subtitle": "https://www.alfredapp.com/powerpack/buy/"
+			},
+		},
+		"text": {
+			"copy": "https://www.alfredapp.com/ (text here to copy)",
+			"largetype": "https://www.alfredapp.com/ (text here for large type)"
+		}
+	}
+
+]}
+EOB
+
+echo $DATE_FORMAT &gt;&gt; /tmp/tz.log</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>16039760-F173-4AB8-9C73-DA7401D5DE23</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>autopaste</key>
+				<false/>
+				<key>clipboardtext</key>
+				<string>{query}</string>
+				<key>ignoredynamicplaceholders</key>
+				<false/>
+				<key>transient</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.clipboard</string>
+			<key>uid</key>
+			<string>959D4A30-8309-40AB-9C18-202E9DE1AFC2</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>lastpathcomponent</key>
+				<false/>
+				<key>onlyshowifquerypopulated</key>
+				<true/>
+				<key>removeextension</key>
+				<false/>
+				<key>text</key>
+				<string>{query}</string>
+				<key>title</key>
+				<string>Time copied to clipboard!</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.notification</string>
+			<key>uid</key>
+			<string>0208042E-BB77-4369-8A05-416BE601F18B</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string># Time (and date) difference
+
+## Input formats:
+- td `&lt;hh:mm&gt;` `&lt;hh:mm&gt;`
+- td `&lt;mm:ss&gt;` `&lt;mm:ss&gt;`- ??
+- td `&lt;hh:mm&gt;` `&lt;hh:mm&gt;`
+- td `&lt;hh:mm:ss&gt;` `&lt;hh:mm:ss&gt;`
+- td `&lt;hh:mm&gt;` `&lt;hh:mm:ss&gt;`- Error
+- td `&lt;hh:mm:ss&gt;` `&lt;hh:mm&gt;`- Error
+- td `&lt;DD&gt;/&lt;MM&gt;/&lt;YYYY&gt;` `&lt;hh:mm:ss&gt;` `&lt;DD&gt;/&lt;MM&gt;/&lt;YYYY&gt;` `&lt;hh:mm:ss&gt;`
+
+## Parameter checks:
+- must me an even number of parameters
+- must be 2 or 4
+- optional "-" character between
+    - Then number 3 or 5
+    - 1st and 3nd -- if 3
+    - 2nd and 3rd -- if 5
+
+## Output:
+- `&lt;d&gt;` days, `&lt;h&gt;` hours, `&lt;m&gt;` minutes, and `&lt;s&gt;` seconds
+- `&lt;d.dddd&gt;` days
+- `&lt;h.hhh&gt;` hours
+- `&lt;m.mmm&gt;` minutes
+- `&lt;s&gt;` seconds
+
+## Unit formatted for singular/plural:
+- day/days
+- hour/hours
+- minut/minutes
+- second/seconds
+
+Notes: 
+- `0,2,...` is plural, `1` is singular)
+- Numbers formatted with thusdands separators, e.g.:
+- `999`
+- `1,234`
+- `1,234,567`
+- `1,234,567.890`
+
+Configurations:
+- Date formats
+    - `DD/MM/YYYY`
+    - `DD/MM`
+    - `MM/DD/YYYY`
+    - `MM/DD`</string>
+	<key>uidata</key>
+	<dict>
+		<key>0208042E-BB77-4369-8A05-416BE601F18B</key>
+		<dict>
+			<key>xpos</key>
+			<real>690</real>
+			<key>ypos</key>
+			<real>50</real>
+		</dict>
+		<key>16039760-F173-4AB8-9C73-DA7401D5DE23</key>
+		<dict>
+			<key>xpos</key>
+			<real>270</real>
+			<key>ypos</key>
+			<real>50</real>
+		</dict>
+		<key>8BDD4CCF-4D55-4ABC-83AC-680D362D12B7</key>
+		<dict>
+			<key>xpos</key>
+			<real>40</real>
+			<key>ypos</key>
+			<real>50</real>
+		</dict>
+		<key>959D4A30-8309-40AB-9C18-202E9DE1AFC2</key>
+		<dict>
+			<key>xpos</key>
+			<real>495</real>
+			<key>ypos</key>
+			<real>50</real>
+		</dict>
+	</dict>
+	<key>userconfigurationconfig</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>td</string>
+				<key>placeholder</key>
+				<string></string>
+				<key>required</key>
+				<true/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string>A keyword for search. Default: td</string>
+			<key>label</key>
+			<string>Search keyword</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>search_keyword</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>1</string>
+				<key>pairs</key>
+				<array>
+					<array>
+						<string>DD/MM/YYYY</string>
+						<string>1</string>
+					</array>
+					<array>
+						<string>DD/MM</string>
+						<string>2</string>
+					</array>
+					<array>
+						<string>MM/DD/YYYY</string>
+						<string>3</string>
+					</array>
+					<array>
+						<string>MM/DD</string>
+						<string>4</string>
+					</array>
+				</array>
+			</dict>
+			<key>description</key>
+			<string>Date format for input</string>
+			<key>label</key>
+			<string>Date format</string>
+			<key>type</key>
+			<string>popupbutton</string>
+			<key>variable</key>
+			<string>DATE_FORMAT</string>
+		</dict>
+	</array>
+	<key>variablesdontexport</key>
+	<array/>
+	<key>version</key>
+	<string>1.0.0</string>
+	<key>webaddress</key>
+	<string>http://jhartman.pl/td</string>
+</dict>
+</plist>

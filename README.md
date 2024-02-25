@@ -1,6 +1,10 @@
 # Time (and date) difference
 (Yet) another time/date diff workflow for Alfred
 
+**WORK IN PROGRESS -- NOTHING USEFUL YET**
+
+# Design and Requirements
+
 Below list of requirements and design considerations
 
 ## Frontend
@@ -41,7 +45,7 @@ Developed in `golang`.
 - minut/minutes
 - second/seconds
 
-Additionally: 
+Additionally:
 - `0,2,...` is plural, `1` is singular)
 - Numbers formatted with thusdands separators, e.g.:
 - `999`
