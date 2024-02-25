@@ -90,7 +90,7 @@ func getItems(dt datetime) Items {
 	}
 
 	item := Item{
-		Uid:      "XBuy a Coffee",
+		Uid:      "_XBuy a Coffee",
 		Title:    "Support my work and Buy me a Coffee!",
 		Subtitle: "TimeDiff workflow by Jarek Hartman",
 		Arg:      "open",
