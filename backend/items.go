@@ -39,35 +39,35 @@ func getItems(dt datetime) Items {
 
 	outputItemFormats := []outputItemFormat{
 		{
-			title:  "Difference",
-			format: "%d days, %d hours, %d minutes, and %d seconds",
+			title:  "Gap",
+			format: "%d days, %d hours, %d minutes and %d seconds",
 			formatFunc: func(f string, dt datetime) string {
 				return fmt.Sprintf(f, dt.day, dt.hour, dt.minute, dt.second)
 			},
 		},
 		{
-			title:  "Days",
+			title:  "In days",
 			format: "%.2f days",
 			formatFunc: func(f string, dt datetime) string {
 				return fmt.Sprintf(f, dt.days)
 			},
 		},
 		{
-			title:  "Hours",
+			title:  "In hours",
 			format: "%.2f hours",
 			formatFunc: func(f string, dt datetime) string {
 				return fmt.Sprintf(f, dt.hours)
 			},
 		},
 		{
-			title:  "Minutes",
+			title:  "In minutes",
 			format: "%.2f minutes",
 			formatFunc: func(f string, dt datetime) string {
 				return fmt.Sprintf(f, dt.minutes)
 			},
 		},
 		{
-			title:  "Seconds",
+			title:  "In seconds",
 			format: "%.0f seconds",
 			formatFunc: func(f string, dt datetime) string {
 				return fmt.Sprintf(f, dt.seconds)

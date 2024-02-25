@@ -20,43 +20,44 @@ Developed in `golang`.
 ## Input components
 
 Time component formats `<time>`:
- - `<ss>`
- - `<mm:ss>`
- - `<hh:mm:ss>`
+ - [X] `<ss>`
+ - [X] `<mm:ss>`
+ - [X] `<hh:mm:ss>`
 
 Date component formats `<date>`:
- - If configured `DD/MM/YYYY`
+ - [ ] If configured `DD/MM/YYYY`
      - `<DD>/<MM>`
      - `<DD>/<MM>/<YYYY>`
- - If configured `MM/DD/YYYY`
+ - [ ] If configured `MM/DD/YYYY`
      - `<MM>/<DD>`
      - `<MM>/<DD>/<YYYY>`
 
 Compount duration component `<period>`:
- - `<d>d<h>h<m>m<s>s`
- - Any component can be ommited, e.g. `1d4h`
+ -  [ ] `<d>d<h>h<m>m<s>s`
+ -  [ ] Any component can be ommited, e.g. `1d4h`
 
 ## Valid queries
 - Duration span (difference)
-    - `td <time> <time>` - time difference
-    - `td <date> <time> <date> <time>` - time difference
+    - [X] `td <time> <time>` - time difference
+    - [ ] `td <date> <time> <date> <time>` - time difference
 - Span calculations, where `<op>` can be `-` or `+`:
-    - `td <time> <op> <time>`
-    - `td <date> <time> <op> <time>`
-    - `td <time> <op> <period>`
-    - `td <date> <time> <op> <period>`
+    - [X] `td <time> <op> <time>`
+    - [ ] `td <date> <time> <op> <time>`
+    - [ ] `td <time> <op> <period>`
+    - [ ] `td <date> <time> <op> <period>`
 
 
 
 ## Output:
-- `<d>` days, `<h>` hours, `<m>` minutes, and `<s>` seconds
-- `<d.ddd>` days
-- `<h.hh>` hours
-- `<m.mm>` minutes
-- `<s>` seconds
+- [X] `<d>` days, `<h>` hours, `<m>` minutes, and `<s>` seconds
+- [ ] `hh:mm:ss`
+- [X] `<d.ddd>` days
+- [X] `<h.hh>` hours
+- [X] `<m.mm>` minutes
+- [X] `<s>` seconds
 - If `<date>` specified, a date will be returned
-    - `DD/MM/YYYY hh:mm:ss`, or
-    - `MM/DD/YYYY hh:mm:ss`
+    - [ ] `DD/MM/YYYY hh:mm:ss`, or
+    - [ ] `MM/DD/YYYY hh:mm:ss`
 
 ## Unit formatted for singular/plural:
 - day/days
