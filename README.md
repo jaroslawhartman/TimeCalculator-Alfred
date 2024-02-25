@@ -59,6 +59,10 @@ Additionally:
 
 Based on Alfred 5 workflow configuration https://www.alfredapp.com/help/workflows/workflow-configuration/
 
+
+![alt text](img/Configuration.png)
+
+- Search Key - default `td`
 - Date formats
     - `DD/MM/YYYY`
     - `DD/MM`
@@ -71,3 +75,4 @@ Must-have!
 
 # References
 * Icon - https://www.flaticon.com/free-icon/duration_5116345
+* https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
