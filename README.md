@@ -9,7 +9,9 @@ Below list of requirements and design considerations
 
 ## Frontend
 
-Workflow for Alfred 5
+Workflow for Alfred 5. Project:
+
+![alt text](img/Project.png)
 
 ## Backend
 
@@ -66,3 +68,6 @@ Based on Alfred 5 workflow configuration https://www.alfredapp.com/help/workflow
 ## OneUpdater support
 
 Must-have!
+
+# References
+* Icon - https://www.flaticon.com/free-icon/duration_5116345

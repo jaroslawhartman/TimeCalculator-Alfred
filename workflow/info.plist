@@ -6,6 +6,31 @@
 	<string>td.jhartman.pl</string>
 	<key>connections</key>
 	<dict>
+		<key>0B803529-84F0-4B15-AB68-B2CEABE0BA7C</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>9E848963-4B5F-48EF-B016-4DFDF0F49D52</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>sourceoutputuid</key>
+				<string>9B69DA15-0F06-4686-9388-5C6516CC5D4C</string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>16039760-F173-4AB8-9C73-DA7401D5DE23</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
 		<key>16039760-F173-4AB8-9C73-DA7401D5DE23</key>
 		<array>
 			<dict>
@@ -23,7 +48,7 @@
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>16039760-F173-4AB8-9C73-DA7401D5DE23</string>
+				<string>0B803529-84F0-4B15-AB68-B2CEABE0BA7C</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -59,6 +84,27 @@
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>browser</key>
+				<string></string>
+				<key>skipqueryencode</key>
+				<false/>
+				<key>skipvarencode</key>
+				<false/>
+				<key>spaces</key>
+				<string></string>
+				<key>url</key>
+				<string>https://www.buymeacoffee.com/jhartman</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.openurl</string>
+			<key>uid</key>
+			<string>9E848963-4B5F-48EF-B016-4DFDF0F49D52</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
 				<key>alfredfiltersresults</key>
 				<false/>
 				<key>alfredfiltersresultsmatchmode</key>
@@ -80,50 +126,19 @@
 				<key>queuedelaymode</key>
 				<integer>0</integer>
 				<key>queuemode</key>
-				<integer>1</integer>
+				<integer>2</integer>
 				<key>runningsubtext</key>
 				<string></string>
 				<key>script</key>
-				<string>#
-# Alfred Script Filter JSON format
-#
-# This example demonstrates all fields available for populating results.
-#
-# For an in-depth explanation, use the (?) help button to the bottom left.
-#
+				<string>query="{query}"
 
-cat &lt;&lt; EOB
-{"items": [
 
-	{
-		"uid": "diff 1",
-		"title": "Time difference 1",
-		"subtitle": "&lt;d&gt; days, &lt;h&gt; hours, &lt;m&gt; minutes, and &lt;s&gt; seconds"
-	},
-	{
-		"uid": "diff 2",
-		"title": "Time difference 2",
-		"subtitle": "&lt;d.dddd&gt; days"
-	},
-	{
-		"uid": "diff 3",
-		"title": "Time difference 3",
-		"subtitle": "&lt;h.hhh&gt; hours"
-	},
-	{
-		"uid": "diff 4",
-		"title": "Time difference 4",
-		"subtitle": "&lt;m.mmm&gt; minutes"
-	},
-	{
-		"uid": "diff 5",
-		"title": "Time difference 5",
-		"subtitle": "&lt;s&gt; seconds"
-	}
-]}
-EOB</string>
+bin/timedifference "{query}"
+
+echo $DATE_FORMAT &gt;&gt; /tmp/td.log
+echo "&gt;$query&lt;" &gt;&gt; /tmp/td.log</string>
 				<key>scriptargtype</key>
-				<integer>1</integer>
+				<integer>0</integer>
 				<key>scriptfile</key>
 				<string></string>
 				<key>subtext</key>
@@ -145,90 +160,50 @@ EOB</string>
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>conditions</key>
+				<array>
+					<dict>
+						<key>inputstring</key>
+						<string>{query}</string>
+						<key>matchcasesensitive</key>
+						<false/>
+						<key>matchmode</key>
+						<integer>0</integer>
+						<key>matchstring</key>
+						<string>open</string>
+						<key>outputlabel</key>
+						<string>Open URL</string>
+						<key>uid</key>
+						<string>9B69DA15-0F06-4686-9388-5C6516CC5D4C</string>
+					</dict>
+				</array>
+				<key>elselabel</key>
+				<string>Show diff</string>
+				<key>hideelse</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.conditional</string>
+			<key>uid</key>
+			<string>0B803529-84F0-4B15-AB68-B2CEABE0BA7C</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
 				<key>concurrently</key>
 				<false/>
 				<key>escaping</key>
 				<integer>102</integer>
 				<key>script</key>
-				<string>query=$1
+				<string>query="{query}"
 
-#
-# Alfred Script Filter JSON format
-#
-# This example demonstrates all fields available for populating results.
-#
-# For an in-depth explanation, use the (?) help button to the bottom left.
-#
+echo -n $query
 
-cat &lt;&lt; EOB
-{"items": [
-
-	{
-		"uid": "desktop",
-		"type": "file",
-		"title": "Desktop",
-		"subtitle": "~/Desktop",
-		"arg": "~/Desktop",
-		"autocomplete": "Desktop",
-		"icon": {
-			"type": "fileicon",
-			"path": "~/Desktop"
-		}
-	},
-
-	{
-		"valid": false,
-		"uid": "flickr",
-		"title": "Flickr",
-		"icon": {
-			"path": "flickr.png"
-		}
-	},
-
-	{
-		"uid": "image",
-		"type": "file",
-		"title": "My holiday photo",
-		"subtitle": "~/Pictures/My holiday photo.jpg",
-		"autocomplete": "My holiday photo",
-		"icon": {
-			"type": "filetype",
-			"path": "public.jpeg"
-		}
-	},
-
-	{
-		"valid": false,
-		"uid": "alfredapp",
-		"title": "Alfred Website",
-		"subtitle": "https://www.alfredapp.com/",
-		"arg": "alfredapp.com",
-		"autocomplete": "Alfred Website",
-		"quicklookurl": "https://www.alfredapp.com/",
-		"mods": {
-			"alt": {
-				"valid": true,
-				"arg": "alfredapp.com/powerpack",
-				"subtitle": "https://www.alfredapp.com/powerpack/"
-			},
-			"cmd": {
-				"valid": true,
-				"arg": "alfredapp.com/powerpack/buy/",
-				"subtitle": "https://www.alfredapp.com/powerpack/buy/"
-			},
-		},
-		"text": {
-			"copy": "https://www.alfredapp.com/ (text here to copy)",
-			"largetype": "https://www.alfredapp.com/ (text here for large type)"
-		}
-	}
-
-]}
-EOB
-
-echo $DATE_FORMAT &gt;&gt; /tmp/tz.log</string>
+echo "zzz $query" &gt;&gt; /tmp/td.log</string>
 				<key>scriptargtype</key>
-				<integer>1</integer>
+				<integer>0</integer>
 				<key>scriptfile</key>
 				<string></string>
 				<key>type</key>
@@ -334,30 +309,44 @@ Configurations:
 		<key>0208042E-BB77-4369-8A05-416BE601F18B</key>
 		<dict>
 			<key>xpos</key>
-			<real>690</real>
+			<real>720</real>
 			<key>ypos</key>
-			<real>50</real>
+			<real>295</real>
+		</dict>
+		<key>0B803529-84F0-4B15-AB68-B2CEABE0BA7C</key>
+		<dict>
+			<key>xpos</key>
+			<real>250</real>
+			<key>ypos</key>
+			<real>190</real>
 		</dict>
 		<key>16039760-F173-4AB8-9C73-DA7401D5DE23</key>
 		<dict>
 			<key>xpos</key>
-			<real>270</real>
+			<real>420</real>
 			<key>ypos</key>
-			<real>50</real>
+			<real>295</real>
 		</dict>
 		<key>8BDD4CCF-4D55-4ABC-83AC-680D362D12B7</key>
 		<dict>
 			<key>xpos</key>
-			<real>40</real>
+			<real>60</real>
 			<key>ypos</key>
-			<real>50</real>
+			<real>170</real>
 		</dict>
 		<key>959D4A30-8309-40AB-9C18-202E9DE1AFC2</key>
 		<dict>
 			<key>xpos</key>
-			<real>495</real>
+			<real>570</real>
 			<key>ypos</key>
-			<real>50</real>
+			<real>295</real>
+		</dict>
+		<key>9E848963-4B5F-48EF-B016-4DFDF0F49D52</key>
+		<dict>
+			<key>xpos</key>
+			<real>425</real>
+			<key>ypos</key>
+			<real>85</real>
 		</dict>
 	</dict>
 	<key>userconfigurationconfig</key>
