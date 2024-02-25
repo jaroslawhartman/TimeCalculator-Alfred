@@ -17,29 +17,46 @@ Workflow for Alfred 5. Project:
 
 Developed in `golang`.
 
-## Input formats:
-- td `<hh:mm>` `<hh:mm>`
-- td `<mm:ss>` `<mm:ss>`- ??
-- td `<hh:mm>` `<hh:mm>`
-- td `<hh:mm:ss>` `<hh:mm:ss>`
-- td `<hh:mm>` `<hh:mm:ss>`- Error
-- td `<hh:mm:ss>` `<hh:mm>`- Error
-- td `<DD>/<MM>/<YYYY>` `<hh:mm:ss>` `<DD>/<MM>/<YYYY>` `<hh:mm:ss>`
+## Input components
 
-## Parameter checks:
-- must me an even number of parameters
-- must be 2 or 4
-- optional "-" character between
-    - Then number 3 or 5
-    - 1st and 3nd -- if 3
-    - 2nd and 3rd -- if 5
+Time component formats `<time>`:
+ - `<ss>`
+ - `<mm:ss>`
+ - `<hh:mm:ss>`
+
+Date component formats `<date>`:
+ - If configured `DD/MM/YYYY`
+     - `<DD>/<MM>`
+     - `<DD>/<MM>/<YYYY>`
+ - If configured `MM/DD/YYYY`
+     - `<MM>/<DD>`
+     - `<MM>/<DD>/<YYYY>`
+
+Compount duration component `<period>`:
+ - `<d>d<h>h<m>m<s>s`
+ - Any component can be ommited, e.g. `1d4h`
+
+## Valid queries
+- Duration span (difference)
+    - `td <time> <time>` - time difference
+    - `td <date> <time> <date> <time>` - time difference
+- Span calculations, where `<op>` can be `-` or `+`:
+    - `td <time> <op> <time>`
+    - `td <date> <time> <op> <time>`
+    - `td <time> <op> <period>`
+    - `td <date> <time> <op> <period>`
+
+
 
 ## Output:
 - `<d>` days, `<h>` hours, `<m>` minutes, and `<s>` seconds
-- `<d.dddd>` days
-- `<h.hhh>` hours
-- `<m.mmm>` minutes
+- `<d.ddd>` days
+- `<h.hh>` hours
+- `<m.mm>` minutes
 - `<s>` seconds
+- If `<date>` specified, a date will be returned
+    - `DD/MM/YYYY hh:mm:ss`, or
+    - `MM/DD/YYYY hh:mm:ss`
 
 ## Unit formatted for singular/plural:
 - day/days
