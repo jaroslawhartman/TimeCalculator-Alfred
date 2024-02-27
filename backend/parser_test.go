@@ -229,6 +229,22 @@ func TestParse(t *testing.T) {
 			},
 		},
 		{
+			input: "1d2h3m4s - 4s3m2h1d",
+			expected: datetime{
+				ts:      0*24 + 0*3600 + 0*60 + 0,
+				day:     0,
+				month:   0,
+				year:    0,
+				hour:    0,
+				minute:  0,
+				second:  0,
+				days:    (0*3600 + 0*60.0 + 0.00) / 3600.0 / 24.0,
+				hours:   (0*3600 + 0*60.0 + 0.00) / 3600.0,
+				minutes: (0*3600 + 0*60.0 + 0.00) / 60.0,
+				seconds: (0*3600 + 0*60.0 + 0.00),
+			},
+		},
+		{
 			input: "1d",
 			expected: datetime{
 				ts:      0*24 + 0*3600 + 0*60 + 0 + 1*24*3600,
@@ -246,6 +262,22 @@ func TestParse(t *testing.T) {
 		},
 		{
 			input: "1d + 12",
+			expected: datetime{
+				ts:      1*24*3600 + 0*3600 + 0*60 + 12,
+				day:     1,
+				month:   0,
+				year:    0,
+				hour:    0,
+				minute:  0,
+				second:  12,
+				days:    86412.0 / 3600.0 / 24.0,
+				hours:   86412.0 / 3600.0,
+				minutes: 86412.0 / 60.0,
+				seconds: 86412.0,
+			},
+		},
+		{
+			input: "1d + 12s",
 			expected: datetime{
 				ts:      1*24*3600 + 0*3600 + 0*60 + 12,
 				day:     1,
