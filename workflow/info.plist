@@ -22,6 +22,18 @@
 			</dict>
 			<dict>
 				<key>destinationuid</key>
+				<string>775298B5-87CE-4958-AE52-3FEEC0CCEEF1</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>sourceoutputuid</key>
+				<string>AE610747-6673-46A9-B495-552BFD4BBF2B</string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
 				<string>16039760-F173-4AB8-9C73-DA7401D5DE23</string>
 				<key>modifiers</key>
 				<integer>0</integer>
@@ -36,6 +48,19 @@
 			<dict>
 				<key>destinationuid</key>
 				<string>959D4A30-8309-40AB-9C18-202E9DE1AFC2</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>775298B5-87CE-4958-AE52-3FEEC0CCEEF1</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>DBB6A766-E658-4CCF-9BB8-3DF0B0D0E0A4</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -135,6 +160,14 @@
 
 bin/timedifference "{query}"
 
+# Unidentified develoeper error
+# Reuqires user permissions
+if [[ "$?" == 137 ]]
+then
+	open bin
+	echo "permission"
+fi
+
 echo $DATE_FORMAT &gt;&gt; /tmp/td.log
 echo "&gt;$query&lt;" &gt;&gt; /tmp/td.log</string>
 				<key>scriptargtype</key>
@@ -146,7 +179,7 @@ echo "&gt;$query&lt;" &gt;&gt; /tmp/td.log</string>
 				<key>title</key>
 				<string>Time difference</string>
 				<key>type</key>
-				<integer>0</integer>
+				<integer>5</integer>
 				<key>withspace</key>
 				<true/>
 			</dict>
@@ -176,6 +209,20 @@ echo "&gt;$query&lt;" &gt;&gt; /tmp/td.log</string>
 						<key>uid</key>
 						<string>9B69DA15-0F06-4686-9388-5C6516CC5D4C</string>
 					</dict>
+					<dict>
+						<key>inputstring</key>
+						<string>{query}</string>
+						<key>matchcasesensitive</key>
+						<false/>
+						<key>matchmode</key>
+						<integer>4</integer>
+						<key>matchstring</key>
+						<string>permission</string>
+						<key>outputlabel</key>
+						<string>Permission</string>
+						<key>uid</key>
+						<string>AE610747-6673-46A9-B495-552BFD4BBF2B</string>
+					</dict>
 				</array>
 				<key>elselabel</key>
 				<string>Show diff</string>
@@ -188,6 +235,82 @@ echo "&gt;$query&lt;" &gt;&gt; /tmp/td.log</string>
 			<string>0B803529-84F0-4B15-AB68-B2CEABE0BA7C</string>
 			<key>version</key>
 			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>lastpathcomponent</key>
+				<false/>
+				<key>onlyshowifquerypopulated</key>
+				<false/>
+				<key>removeextension</key>
+				<false/>
+				<key>text</key>
+				<string>You need to accept this binary</string>
+				<key>title</key>
+				<string>User action required</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.notification</string>
+			<key>uid</key>
+			<string>DBB6A766-E658-4CCF-9BB8-3DF0B0D0E0A4</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>openwith</key>
+				<string></string>
+				<key>sourcefile</key>
+				<string></string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.openfile</string>
+			<key>uid</key>
+			<string>775298B5-87CE-4958-AE52-3FEEC0CCEEF1</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>lastpathcomponent</key>
+				<false/>
+				<key>onlyshowifquerypopulated</key>
+				<true/>
+				<key>removeextension</key>
+				<false/>
+				<key>text</key>
+				<string>{query}</string>
+				<key>title</key>
+				<string>Time copied to clipboard!</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.notification</string>
+			<key>uid</key>
+			<string>0208042E-BB77-4369-8A05-416BE601F18B</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>autopaste</key>
+				<false/>
+				<key>clipboardtext</key>
+				<string>{query}</string>
+				<key>ignoredynamicplaceholders</key>
+				<false/>
+				<key>transient</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.clipboard</string>
+			<key>uid</key>
+			<string>959D4A30-8309-40AB-9C18-202E9DE1AFC2</string>
+			<key>version</key>
+			<integer>3</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -215,46 +338,6 @@ echo "zzz $query" &gt;&gt; /tmp/td.log</string>
 			<string>16039760-F173-4AB8-9C73-DA7401D5DE23</string>
 			<key>version</key>
 			<integer>2</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>autopaste</key>
-				<false/>
-				<key>clipboardtext</key>
-				<string>{query}</string>
-				<key>ignoredynamicplaceholders</key>
-				<false/>
-				<key>transient</key>
-				<false/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.output.clipboard</string>
-			<key>uid</key>
-			<string>959D4A30-8309-40AB-9C18-202E9DE1AFC2</string>
-			<key>version</key>
-			<integer>3</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>lastpathcomponent</key>
-				<false/>
-				<key>onlyshowifquerypopulated</key>
-				<true/>
-				<key>removeextension</key>
-				<false/>
-				<key>text</key>
-				<string>{query}</string>
-				<key>title</key>
-				<string>Time copied to clipboard!</string>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.output.notification</string>
-			<key>uid</key>
-			<string>0208042E-BB77-4369-8A05-416BE601F18B</string>
-			<key>version</key>
-			<integer>1</integer>
 		</dict>
 	</array>
 	<key>readme</key>
@@ -311,7 +394,7 @@ Configurations:
 			<key>xpos</key>
 			<real>720</real>
 			<key>ypos</key>
-			<real>295</real>
+			<real>410</real>
 		</dict>
 		<key>0B803529-84F0-4B15-AB68-B2CEABE0BA7C</key>
 		<dict>
@@ -325,21 +408,28 @@ Configurations:
 			<key>xpos</key>
 			<real>420</real>
 			<key>ypos</key>
-			<real>295</real>
+			<real>410</real>
+		</dict>
+		<key>775298B5-87CE-4958-AE52-3FEEC0CCEEF1</key>
+		<dict>
+			<key>xpos</key>
+			<real>600</real>
+			<key>ypos</key>
+			<real>225</real>
 		</dict>
 		<key>8BDD4CCF-4D55-4ABC-83AC-680D362D12B7</key>
 		<dict>
 			<key>xpos</key>
-			<real>60</real>
+			<real>30</real>
 			<key>ypos</key>
-			<real>170</real>
+			<real>185</real>
 		</dict>
 		<key>959D4A30-8309-40AB-9C18-202E9DE1AFC2</key>
 		<dict>
 			<key>xpos</key>
 			<real>570</real>
 			<key>ypos</key>
-			<real>295</real>
+			<real>410</real>
 		</dict>
 		<key>9E848963-4B5F-48EF-B016-4DFDF0F49D52</key>
 		<dict>
@@ -347,6 +437,13 @@ Configurations:
 			<real>425</real>
 			<key>ypos</key>
 			<real>85</real>
+		</dict>
+		<key>DBB6A766-E658-4CCF-9BB8-3DF0B0D0E0A4</key>
+		<dict>
+			<key>xpos</key>
+			<real>815</real>
+			<key>ypos</key>
+			<real>225</real>
 		</dict>
 	</dict>
 	<key>userconfigurationconfig</key>

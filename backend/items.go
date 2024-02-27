@@ -35,7 +35,7 @@ type outputItemFormat struct {
 	formatFunc func(f string, dt datetime) string
 }
 
-func getItems(dt datetime) Items {
+func getItems(dt datetime, err error) Items {
 
 	outputItemFormats := []outputItemFormat{
 		{
@@ -79,14 +79,29 @@ func getItems(dt datetime) Items {
 		Skipknowldedge: true,
 	}
 
-	for _, v := range outputItemFormats {
-		item := Item{
-			Title:    fmt.Sprintf("%s", v.title),
-			Subtitle: v.formatFunc(v.format, dt),
-			Arg:      v.formatFunc(v.format, dt),
-		}
+	// Skip any output if error
+	if err == nil {
+		for _, v := range outputItemFormats {
+			item := Item{
+				Title:    fmt.Sprintf("%s", v.title),
+				Subtitle: v.formatFunc(v.format, dt),
+				Arg:      v.formatFunc(v.format, dt),
+			}
 
+			items.Items = append(items.Items, item)
+		}
+	} else {
+		item := Item{
+			Uid:      "Error",
+			Title:    "Input error!",
+			Subtitle: err.Error(),
+			Arg:      "error",
+			Action: Action{
+				URL: buymeacoffee,
+			},
+		}
 		items.Items = append(items.Items, item)
+
 	}
 
 	item := Item{
@@ -107,27 +122,28 @@ func getItems(dt datetime) Items {
 	return items
 }
 
-func getMarshalledItems(r datetime) string {
-	items := getItems(r)
+func getAlfredJson(p string) string {
+	var items Items
+
+	dt, err := parse(p)
+	items = getItems(dt, err)
 
 	b, err := json.MarshalIndent(items, "", "  ")
-
 	if err == nil {
 		return string(b)
 	} else {
 		outputWithError := `
 		{
-			"skipknowldedge": true,
-			"items": [
-				{
-					"uid": "Error",
-					"title": "Error",
-					"subtitle": "%s",
-				},
+		"skipknowldedge": true,
+		"items": [
+			{
+				"uid": "Error",
+				"title": "JSON Marshalling error",
+				"subtitle": "%s",
+			},
 			]
 		}
 		`
-
 		return fmt.Sprintf(outputWithError, err)
 	}
 }

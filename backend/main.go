@@ -7,9 +7,6 @@ import (
 
 const buymeacoffee = "https://www.buymeacoffee.com/jhartman"
 
-// TODO
-// - JSON marshalling/unmarshalling
-
 func main() {
 	var input string
 
@@ -20,5 +17,5 @@ func main() {
 		input = os.Args[1]
 	}
 
-	fmt.Println(parse(input))
+	fmt.Println(getAlfredJson(input))
 }
