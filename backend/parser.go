@@ -11,6 +11,8 @@ import (
 const (
 	add = iota
 	sub
+	mul
+	div
 )
 
 type parser struct {
@@ -23,7 +25,7 @@ type parser struct {
 type datetime struct {
 	parameter                     string
 	dt                            time.Time
-	ts                            int // no of seconds
+	ts                            int64 // no of seconds
 	day, month, year              int
 	hour, minute, second          int
 	days, hours, minutes, seconds float32
@@ -55,14 +57,14 @@ func (dt *datetime) updateDT() {
 	dt.hours = s / 3600.0
 	dt.days = s / (3600.0 * 24.0)
 
-	dt.ts = int(s)
+	dt.ts = int64(s)
 
 	n := dt.ts
-	dt.day = n / (24 * 3600)
+	dt.day = int(n / (24 * 3600))
 	n %= (24 * 3600)
-	dt.hour = n / 3600
+	dt.hour = int(n / 3600)
 	n %= 3600
-	dt.minute = n / 60
+	dt.minute = int(n / 60)
 	dt.second %= 60
 
 	dt.dt = time.Date(dt.year, time.Month(dt.month), dt.day, dt.hour, dt.minute, dt.second, 0, time.UTC)
@@ -73,16 +75,24 @@ func (dt *datetime) calculateDT(dt1 datetime, dt2 datetime, operation int) {
 		dt.ts = dt2.ts + dt1.ts
 	} else if operation == sub {
 		dt.ts = dt2.ts - dt1.ts
+	} else if operation == mul {
+		dt.ts = dt2.ts * dt1.ts
+	} else if operation == div {
+		if dt1.ts != 0 {
+			dt.ts = dt2.ts / dt1.ts
+		} else {
+			dt.ts = dt1.ts
+		}
 	}
 
 	n := dt.ts
-	dt.second = n % 60
+	dt.second = int(n % 60)
 	n /= 60
-	dt.minute = n % 60
+	dt.minute = int(n % 60)
 	n /= 60
-	dt.hour = n % 60
+	dt.hour = int(n % 60)
 	n /= 60
-	dt.day = n % 24
+	dt.day = int(n % 24)
 	n /= 24
 
 	dt.updateDT()
@@ -208,14 +218,21 @@ func parseField(f string, dt *datetime) error {
 }
 
 func parse(p string) (datetime, error) {
-	fields := strings.Split(p, " ")
+	// As later input string will be split using space(s)
+	// ensure there IS a space around the operator
+	// So accept: 3+4 or 3 + 4
+	for _, c := range []string{"+", "-", "*", "/"} {
+		p = strings.ReplaceAll(p, c, " "+c+" ")
+	}
+
+	fields := strings.Fields(p)
 
 	switch len(fields) {
 	case 0:
 		result := datetime{
 			parameter: p,
 		}
-		return result, errors.New("Nothing to calculate")
+		return result, errors.New("nothing to calculate")
 	case 1:
 		result := datetime{
 			parameter: p,
@@ -272,8 +289,12 @@ func parse(p string) (datetime, error) {
 			result.calculateDT(dt2, dt1, add)
 		} else if fields[1] == "-" {
 			result.calculateDT(dt2, dt1, sub)
+		} else if fields[1] == "*" {
+			result.calculateDT(dt2, dt1, mul)
+		} else if fields[1] == "/" {
+			result.calculateDT(dt2, dt1, div)
 		} else {
-			return result, errors.New("Allowed format: <field> <op> <field> where op = +-")
+			return result, errors.New("allowed format: <field> <op> <field> where op = +-")
 		}
 
 		return result, nil
@@ -282,5 +303,5 @@ func parse(p string) (datetime, error) {
 	result := datetime{
 		parameter: p,
 	}
-	return result, errors.New("Input formatted incorrectly!")
+	return result, errors.New("input formatted incorrectly")
 }

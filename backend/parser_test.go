@@ -305,8 +305,10 @@ func TestParse(t *testing.T) {
 			time.UTC)
 
 		ts.expected.parameter = ts.input
-
 		result, _ := parse(ts.input)
+
+		// ignore parameter modifications
+		result.parameter = ts.input
 
 		if result != ts.expected {
 			t.Logf(">>> Result NOK for input: >%s<\n", ts.input)

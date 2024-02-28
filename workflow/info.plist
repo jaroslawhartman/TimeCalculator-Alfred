@@ -275,46 +275,6 @@ echo "&gt;$query&lt;" &gt;&gt; /tmp/td.log</string>
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>lastpathcomponent</key>
-				<false/>
-				<key>onlyshowifquerypopulated</key>
-				<true/>
-				<key>removeextension</key>
-				<false/>
-				<key>text</key>
-				<string>{query}</string>
-				<key>title</key>
-				<string>Time copied to clipboard!</string>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.output.notification</string>
-			<key>uid</key>
-			<string>0208042E-BB77-4369-8A05-416BE601F18B</string>
-			<key>version</key>
-			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>autopaste</key>
-				<false/>
-				<key>clipboardtext</key>
-				<string>{query}</string>
-				<key>ignoredynamicplaceholders</key>
-				<false/>
-				<key>transient</key>
-				<false/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.output.clipboard</string>
-			<key>uid</key>
-			<string>959D4A30-8309-40AB-9C18-202E9DE1AFC2</string>
-			<key>version</key>
-			<integer>3</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
 				<key>concurrently</key>
 				<false/>
 				<key>escaping</key>
@@ -339,47 +299,95 @@ echo "zzz $query" &gt;&gt; /tmp/td.log</string>
 			<key>version</key>
 			<integer>2</integer>
 		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>autopaste</key>
+				<false/>
+				<key>clipboardtext</key>
+				<string>{query}</string>
+				<key>ignoredynamicplaceholders</key>
+				<false/>
+				<key>transient</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.clipboard</string>
+			<key>uid</key>
+			<string>959D4A30-8309-40AB-9C18-202E9DE1AFC2</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>lastpathcomponent</key>
+				<false/>
+				<key>onlyshowifquerypopulated</key>
+				<true/>
+				<key>removeextension</key>
+				<false/>
+				<key>text</key>
+				<string>{query}</string>
+				<key>title</key>
+				<string>Time copied to clipboard!</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.notification</string>
+			<key>uid</key>
+			<string>0208042E-BB77-4369-8A05-416BE601F18B</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
 	</array>
 	<key>readme</key>
 	<string># Time (and date) difference
 
-## Input formats:
-- td `&lt;hh:mm&gt;` `&lt;hh:mm&gt;`
-- td `&lt;mm:ss&gt;` `&lt;mm:ss&gt;`- ??
-- td `&lt;hh:mm&gt;` `&lt;hh:mm&gt;`
-- td `&lt;hh:mm:ss&gt;` `&lt;hh:mm:ss&gt;`
-- td `&lt;hh:mm&gt;` `&lt;hh:mm:ss&gt;`- Error
-- td `&lt;hh:mm:ss&gt;` `&lt;hh:mm&gt;`- Error
-- td `&lt;DD&gt;/&lt;MM&gt;/&lt;YYYY&gt;` `&lt;hh:mm:ss&gt;` `&lt;DD&gt;/&lt;MM&gt;/&lt;YYYY&gt;` `&lt;hh:mm:ss&gt;`
+Time component formats `&lt;time&gt;`:
+ - [X] `&lt;ss&gt;`
+ - [X] `&lt;mm:ss&gt;`
+ - [X] `&lt;hh:mm:ss&gt;`
 
-## Parameter checks:
-- must me an even number of parameters
-- must be 2 or 4
-- optional "-" character between
-    - Then number 3 or 5
-    - 1st and 3nd -- if 3
-    - 2nd and 3rd -- if 5
+Date component formats `&lt;date&gt;`:
+ - [ ] If configured `DD/MM/YYYY`
+     - `&lt;DD&gt;/&lt;MM&gt;`
+     - `&lt;DD&gt;/&lt;MM&gt;/&lt;YYYY&gt;`
+ - [ ] If configured `MM/DD/YYYY`
+     - `&lt;MM&gt;/&lt;DD&gt;`
+     - `&lt;MM&gt;/&lt;DD&gt;/&lt;YYYY&gt;`
+
+Compount duration component `&lt;period&gt;`:
+ -  [X] `&lt;d&gt;d&lt;h&gt;h&lt;m&gt;m&lt;s&gt;s` - in any order
+ -  [X] Any component can be ommited, e.g. `1d4h`
+
+Number component `&lt;number&gt;` represents:
+ -  [X] Number of seconds `60`
+ -  [ ] A number for Span calculations `*` or `/`
+
+
+## Valid queries
+- Duration span (difference) where `&lt;OP&gt;` can be `-` or `+`:
+    - [X] `td &lt;time&gt; &lt;OP&gt; &lt;time&gt;` - time difference
+    - [ ] `td &lt;date&gt; &lt;time&gt; &lt;OP&gt; &lt;date&gt; &lt;time&gt;` - time difference
+- Span calculations, where `&lt;OP&gt;` can be `-` or `+`:
+    - [X] `td &lt;time&gt; &lt;OP&gt; &lt;time&gt;`
+    - [ ] `td &lt;date&gt; &lt;time&gt; &lt;OP&gt; &lt;time&gt;`
+    - [X] `td &lt;time&gt; &lt;OP&gt; &lt;period&gt;`
+    - [ ] `td &lt;date&gt; &lt;time&gt; &lt;OP&gt; &lt;period&gt;`
+- Span calculations, where `&lt;OP&gt;` can be `*` or `/`:
+    - [ ] `td &lt;time&gt; &lt;OP&gt; &lt;number&gt;`
+
 
 ## Output:
-- `&lt;d&gt;` days, `&lt;h&gt;` hours, `&lt;m&gt;` minutes, and `&lt;s&gt;` seconds
-- `&lt;d.dddd&gt;` days
-- `&lt;h.hhh&gt;` hours
-- `&lt;m.mmm&gt;` minutes
-- `&lt;s&gt;` seconds
-
-## Unit formatted for singular/plural:
-- day/days
-- hour/hours
-- minut/minutes
-- second/seconds
-
-Notes: 
-- `0,2,...` is plural, `1` is singular)
-- Numbers formatted with thusdands separators, e.g.:
-- `999`
-- `1,234`
-- `1,234,567`
-- `1,234,567.890`
+- [X] `&lt;d&gt;` days, `&lt;h&gt;` hours, `&lt;m&gt;` minutes, and `&lt;s&gt;` seconds
+- [ ] `hh:mm:ss` (or `&lt;hh&gt;h&lt;mm&gt;m&lt;ss&gt;s` ?) -- perhaps optional (with AM/PM)
+- [X] `&lt;d.ddd&gt;` days
+- [X] `&lt;h.hh&gt;` hours
+- [X] `&lt;m.mm&gt;` minutes
+- [X] `&lt;s&gt;` seconds
+- If `&lt;date&gt;` specified, a date will be returned
+    - [ ] `DD/MM/YYYY hh:mm:ss`, or
+    - [ ] `MM/DD/YYYY hh:mm:ss`
 
 Configurations:
 - Date formats
@@ -507,7 +515,7 @@ Configurations:
 	<key>variablesdontexport</key>
 	<array/>
 	<key>version</key>
-	<string>1.0.0</string>
+	<string>1.0.1</string>
 	<key>webaddress</key>
 	<string>http://jhartman.pl/td</string>
 </dict>

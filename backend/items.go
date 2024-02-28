@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 )
 
@@ -120,30 +119,4 @@ func getItems(dt datetime, err error) Items {
 	items.Items = append(items.Items, item)
 
 	return items
-}
-
-func getAlfredJson(p string) string {
-	var items Items
-
-	dt, err := parse(p)
-	items = getItems(dt, err)
-
-	b, err := json.MarshalIndent(items, "", "  ")
-	if err == nil {
-		return string(b)
-	} else {
-		outputWithError := `
-		{
-		"skipknowldedge": true,
-		"items": [
-			{
-				"uid": "Error",
-				"title": "JSON Marshalling error",
-				"subtitle": "%s",
-			},
-			]
-		}
-		`
-		return fmt.Sprintf(outputWithError, err)
-	}
 }
