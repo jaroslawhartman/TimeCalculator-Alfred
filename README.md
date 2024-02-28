@@ -33,24 +33,30 @@ Date component formats `<date>`:
      - `<MM>/<DD>/<YYYY>`
 
 Compount duration component `<period>`:
- -  [ ] `<d>d<h>h<m>m<s>s`
- -  [ ] Any component can be ommited, e.g. `1d4h`
+ -  [X] `<d>d<h>h<m>m<s>s` - in any order
+ -  [X] Any component can be ommited, e.g. `1d4h`
+
+Number component `<number>` represents:
+ -  [X] Number of seconds `60`
+ -  [ ] A number for Span calculations `*` or `/`
+
 
 ## Valid queries
-- Duration span (difference)
-    - [X] `td <time> <time>` - time difference
-    - [ ] `td <date> <time> <date> <time>` - time difference
-- Span calculations, where `<op>` can be `-` or `+`:
-    - [X] `td <time> <op> <time>`
-    - [ ] `td <date> <time> <op> <time>`
-    - [ ] `td <time> <op> <period>`
-    - [ ] `td <date> <time> <op> <period>`
-
+- Duration span (difference) where `<OP>` can be `-` or `+`:
+    - [X] `td <time> <OP> <time>` - time difference
+    - [ ] `td <date> <time> <OP> <date> <time>` - time difference
+- Span calculations, where `<OP>` can be `-` or `+`:
+    - [X] `td <time> <OP> <time>`
+    - [ ] `td <date> <time> <OP> <time>`
+    - [X] `td <time> <OP> <period>`
+    - [ ] `td <date> <time> <OP> <period>`
+- Span calculations, where `<OP>` can be `*` or `/`:
+    - [ ] `td <time> <OP> <number>`
 
 
 ## Output:
 - [X] `<d>` days, `<h>` hours, `<m>` minutes, and `<s>` seconds
-- [ ] `hh:mm:ss`
+- [ ] `hh:mm:ss` (or `<hh>h<mm>m<ss>s` ?) -- perhaps optional (with AM/PM)
 - [X] `<d.ddd>` days
 - [X] `<h.hh>` hours
 - [X] `<m.mm>` minutes
