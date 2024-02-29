@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>bundleid</key>
-	<string>td.jhartman.pl</string>
+	<string>tc.jhartman.pl</string>
 	<key>connections</key>
 	<dict>
 		<key>0B803529-84F0-4B15-AB68-B2CEABE0BA7C</key>
@@ -99,11 +99,11 @@
 	<key>createdby</key>
 	<string>Jarek Hartman</string>
 	<key>description</key>
-	<string>A difference between two points in time</string>
+	<string>Calculations for date, time and durations</string>
 	<key>disabled</key>
 	<false/>
 	<key>name</key>
-	<string>Time and Date difference</string>
+	<string>Time and Date Calculator</string>
 	<key>objects</key>
 	<array>
 		<dict>
@@ -158,7 +158,7 @@
 				<string>query="{query}"
 
 
-bin/timedifference "{query}"
+bin/timecalculator "{query}"
 
 # Unidentified develoeper error
 # Reuqires user permissions
@@ -175,9 +175,9 @@ echo "&gt;$query&lt;" &gt;&gt; /tmp/td.log</string>
 				<key>scriptfile</key>
 				<string></string>
 				<key>subtext</key>
-				<string>A time difference between two points in time</string>
+				<string>Time and date calculations</string>
 				<key>title</key>
-				<string>Time difference</string>
+				<string>Time Calculator</string>
 				<key>type</key>
 				<integer>5</integer>
 				<key>withspace</key>
@@ -275,6 +275,46 @@ echo "&gt;$query&lt;" &gt;&gt; /tmp/td.log</string>
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>lastpathcomponent</key>
+				<false/>
+				<key>onlyshowifquerypopulated</key>
+				<true/>
+				<key>removeextension</key>
+				<false/>
+				<key>text</key>
+				<string>{query}</string>
+				<key>title</key>
+				<string>Time copied to clipboard!</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.notification</string>
+			<key>uid</key>
+			<string>0208042E-BB77-4369-8A05-416BE601F18B</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>autopaste</key>
+				<false/>
+				<key>clipboardtext</key>
+				<string>{query}</string>
+				<key>ignoredynamicplaceholders</key>
+				<false/>
+				<key>transient</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.clipboard</string>
+			<key>uid</key>
+			<string>959D4A30-8309-40AB-9C18-202E9DE1AFC2</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
 				<key>concurrently</key>
 				<false/>
 				<key>escaping</key>
@@ -299,49 +339,9 @@ echo "zzz $query" &gt;&gt; /tmp/td.log</string>
 			<key>version</key>
 			<integer>2</integer>
 		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>autopaste</key>
-				<false/>
-				<key>clipboardtext</key>
-				<string>{query}</string>
-				<key>ignoredynamicplaceholders</key>
-				<false/>
-				<key>transient</key>
-				<false/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.output.clipboard</string>
-			<key>uid</key>
-			<string>959D4A30-8309-40AB-9C18-202E9DE1AFC2</string>
-			<key>version</key>
-			<integer>3</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>lastpathcomponent</key>
-				<false/>
-				<key>onlyshowifquerypopulated</key>
-				<true/>
-				<key>removeextension</key>
-				<false/>
-				<key>text</key>
-				<string>{query}</string>
-				<key>title</key>
-				<string>Time copied to clipboard!</string>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.output.notification</string>
-			<key>uid</key>
-			<string>0208042E-BB77-4369-8A05-416BE601F18B</string>
-			<key>version</key>
-			<integer>1</integer>
-		</dict>
 	</array>
 	<key>readme</key>
-	<string># Time (and date) difference
+	<string># Time and Date Calculator workflow
 
 Time component formats `&lt;time&gt;`:
  - [X] `&lt;ss&gt;`
@@ -460,7 +460,7 @@ Configurations:
 			<key>config</key>
 			<dict>
 				<key>default</key>
-				<string>td</string>
+				<string>tc</string>
 				<key>placeholder</key>
 				<string></string>
 				<key>required</key>
@@ -469,7 +469,7 @@ Configurations:
 				<true/>
 			</dict>
 			<key>description</key>
-			<string>A keyword for search. Default: td</string>
+			<string>A keyword for search. Default: tc</string>
 			<key>label</key>
 			<string>Search keyword</string>
 			<key>type</key>
@@ -512,11 +512,9 @@ Configurations:
 			<string>DATE_FORMAT</string>
 		</dict>
 	</array>
-	<key>variablesdontexport</key>
-	<array/>
 	<key>version</key>
-	<string>1.0.1</string>
+	<string>1.0.3</string>
 	<key>webaddress</key>
-	<string>http://jhartman.pl/td</string>
+	<string>http://jhartman.pl/tc</string>
 </dict>
 </plist>

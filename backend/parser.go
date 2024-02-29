@@ -15,6 +15,13 @@ const (
 	div
 )
 
+// when invoking updateDT, what is the "source of truth"
+// to update other fields
+const (
+	ts     = iota // dt.ts
+	ymdhms        // dt.year, month, day, hour, minute & second firld
+)
+
 type parser struct {
 	regex          string
 	noOfParameters int
@@ -49,17 +56,28 @@ func Atoi(f string) int {
 	}
 }
 
-func (dt *datetime) updateDT() {
-	s := float32(dt.second + dt.minute*60 + dt.hour*3600 + dt.day*24*3600)
+func (dt *datetime) updateDT(source int) {
 
-	dt.seconds = s
-	dt.minutes = s / 60.0
-	dt.hours = s / 3600.0
-	dt.days = s / (3600.0 * 24.0)
+	var s int64
 
-	dt.ts = int64(s)
+	if source == ymdhms {
+		s = int64(dt.second + dt.minute*60 + dt.hour*3600 + dt.day*24*3600)
+		dt.ts = s
+	} else if source == ts {
+		s = dt.ts
+	}
+
+	// calculating durations in units as below
+	dt.seconds = float32(s)
+	dt.minutes = float32(s) / 60.0
+	dt.hours = float32(s) / 3600.0
+	dt.days = float32(s) / (3600.0 * 24.0)
+
+	// Finally align and rollover if needed
+	// i.e. minute = 65 will become hour = 1 and minute = 5
 
 	n := dt.ts
+	dt.second = int(n)
 	dt.day = int(n / (24 * 3600))
 	n %= (24 * 3600)
 	dt.hour = int(n / 3600)
@@ -85,17 +103,7 @@ func (dt *datetime) calculateDT(dt1 datetime, dt2 datetime, operation int) {
 		}
 	}
 
-	n := dt.ts
-	dt.second = int(n % 60)
-	n /= 60
-	dt.minute = int(n % 60)
-	n /= 60
-	dt.hour = int(n % 60)
-	n /= 60
-	dt.day = int(n % 24)
-	n /= 24
-
-	dt.updateDT()
+	dt.updateDT(ts)
 
 	// dt.dt = time.Now()
 }
@@ -201,7 +209,7 @@ func parseField(f string, dt *datetime) error {
 			p.parserFunc(match, dt)
 			// updateDT needs to calculate:
 			// - ts, days, hours, minutes, seconds
-			dt.updateDT()
+			dt.updateDT(ymdhms)
 			if !p.parseNext {
 				return nil
 			}

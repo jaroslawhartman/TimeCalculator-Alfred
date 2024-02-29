@@ -150,7 +150,7 @@ func TestParseField(t *testing.T) {
 			t.Logf(">>> Result NOK for input: >%s<\n", ts.input)
 			t.Error(">>> Input", ts.input)
 			t.Errorf(">>> Expected %+v\n", ts.expected)
-			t.Errorf(">>> Result %+v\n", result)
+			t.Errorf(">>> Result   %+v\n", result)
 		}
 	}
 
@@ -292,6 +292,22 @@ func TestParse(t *testing.T) {
 				seconds: 86412.0,
 			},
 		},
+		{
+			input: "1d+2d",
+			expected: datetime{
+				ts:      3*24*3600 + 0*3600 + 0*60 + 0,
+				day:     3,
+				month:   0,
+				year:    0,
+				hour:    0,
+				minute:  0,
+				second:  0,
+				days:    259200.0 / 3600.0 / 24.0,
+				hours:   259200.0 / 3600.0,
+				minutes: 259200.0 / 60.0,
+				seconds: 259200.0,
+			},
+		},
 	}
 
 	for _, ts := range tests {
@@ -314,7 +330,7 @@ func TestParse(t *testing.T) {
 			t.Logf(">>> Result NOK for input: >%s<\n", ts.input)
 			t.Error(">>> Input", ts.input)
 			t.Errorf(">>> Expected %+v\n", ts.expected)
-			t.Errorf(">>> Result %+v\n", result)
+			t.Errorf(">>> Result   %+v\n", result)
 		}
 	}
 

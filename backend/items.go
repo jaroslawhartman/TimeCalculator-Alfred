@@ -38,7 +38,7 @@ func getItems(dt datetime, err error) Items {
 
 	outputItemFormats := []outputItemFormat{
 		{
-			title:  "Gap",
+			title:  "Result",
 			format: "%d days, %d hours, %d minutes and %d seconds",
 			formatFunc: func(f string, dt datetime) string {
 				return fmt.Sprintf(f, dt.day, dt.hour, dt.minute, dt.second)
