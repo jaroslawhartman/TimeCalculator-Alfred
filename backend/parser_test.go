@@ -32,6 +32,7 @@ func TestParseField(t *testing.T) {
 			//   - `<ss>`
 			input: "12",
 			expected: datetime{
+				kind:    number | duration,
 				ts:      0*24 + 0*3600 + 0*60 + 12,
 				day:     0,
 				month:   0,
@@ -49,6 +50,7 @@ func TestParseField(t *testing.T) {
 			//   - `<ss>`
 			input: "60",
 			expected: datetime{
+				kind:    number | duration,
 				ts:      0*24 + 0*3600 + 1*60 + 0,
 				day:     0,
 				month:   0,
@@ -66,6 +68,7 @@ func TestParseField(t *testing.T) {
 			//   - `<ss+>`
 			input: "123",
 			expected: datetime{
+				kind:    number | duration,
 				ts:      0*24 + 0*3600 + 0*60 + 123,
 				day:     0,
 				month:   0,
@@ -83,6 +86,7 @@ func TestParseField(t *testing.T) {
 			//   - `<mm:ss>`
 			input: "12:34",
 			expected: datetime{
+				kind:    duration,
 				ts:      0*24 + 0*3600 + 12*60 + 34,
 				day:     0,
 				month:   0,
@@ -100,6 +104,7 @@ func TestParseField(t *testing.T) {
 			//   - `<hh:mm:ss>`
 			input: "12:34:56",
 			expected: datetime{
+				kind:    duration,
 				ts:      0*24 + 12*3600 + 34*60 + 56,
 				day:     0,
 				month:   0,
@@ -117,6 +122,7 @@ func TestParseField(t *testing.T) {
 			//   - `<hh:mm:ss>`
 			input: "1d",
 			expected: datetime{
+				kind:    duration,
 				ts:      0*24 + 0*3600 + 0*60 + 0 + 1*24*3600,
 				day:     1,
 				month:   0,
@@ -165,6 +171,7 @@ func TestParse(t *testing.T) {
 			//   - `<ss>`
 			input: "10 + 2",
 			expected: datetime{
+				kind:    number | duration,
 				ts:      0*24 + 0*3600 + 0*60 + 12,
 				day:     0,
 				month:   0,
@@ -182,23 +189,25 @@ func TestParse(t *testing.T) {
 			//   - `<ss+>`
 			input: "200 77",
 			expected: datetime{
-				ts:      0*24 + 0*3600 + 0*60 + 123,
+				kind:    none,
+				ts:      0*24 + 0*3600 + 0*60 + 0,
 				day:     0,
 				month:   0,
 				year:    0,
 				hour:    0,
-				minute:  2,
-				second:  3,
-				days:    123.0 / 3600.0 / 24.0,
-				hours:   123.0 / 3600.0,
-				minutes: 123.0 / 60.0,
-				seconds: 123.0,
+				minute:  0,
+				second:  0,
+				days:    0.0 / 3600.0 / 24.0,
+				hours:   0.0 / 3600.0,
+				minutes: 0.0 / 60.0,
+				seconds: 0.0,
 			},
 		},
 		{
 			//   - `<mm:ss>`
 			input: "10:34 + 2:26",
 			expected: datetime{
+				kind:    duration,
 				ts:      0*24 + 0*3600 + 13*60 + 00,
 				day:     0,
 				month:   0,
@@ -215,6 +224,7 @@ func TestParse(t *testing.T) {
 		{
 			input: "12:34:56 - 12:34:56",
 			expected: datetime{
+				kind:    duration,
 				ts:      0*24 + 0*3600 + 0*60 + 0,
 				day:     0,
 				month:   0,
@@ -231,6 +241,7 @@ func TestParse(t *testing.T) {
 		{
 			input: "1d2h3m4s - 4s3m2h1d",
 			expected: datetime{
+				kind:    duration,
 				ts:      0*24 + 0*3600 + 0*60 + 0,
 				day:     0,
 				month:   0,
@@ -247,6 +258,7 @@ func TestParse(t *testing.T) {
 		{
 			input: "1d",
 			expected: datetime{
+				kind:    duration,
 				ts:      0*24 + 0*3600 + 0*60 + 0 + 1*24*3600,
 				day:     1,
 				month:   0,
@@ -263,6 +275,7 @@ func TestParse(t *testing.T) {
 		{
 			input: "1d + 12",
 			expected: datetime{
+				kind:    duration,
 				ts:      1*24*3600 + 0*3600 + 0*60 + 12,
 				day:     1,
 				month:   0,
@@ -279,6 +292,7 @@ func TestParse(t *testing.T) {
 		{
 			input: "1d + 12s",
 			expected: datetime{
+				kind:    duration,
 				ts:      1*24*3600 + 0*3600 + 0*60 + 12,
 				day:     1,
 				month:   0,
@@ -295,6 +309,7 @@ func TestParse(t *testing.T) {
 		{
 			input: "1d+2d",
 			expected: datetime{
+				kind:    duration,
 				ts:      3*24*3600 + 0*3600 + 0*60 + 0,
 				day:     3,
 				month:   0,
@@ -308,23 +323,51 @@ func TestParse(t *testing.T) {
 				seconds: 259200.0,
 			},
 		},
+		{
+			input: "22/11",
+			expected: datetime{
+				kind:    number,
+				ts:      0*24*3600 + 0*3600 + 0*60 + 2,
+				day:     0,
+				month:   0,
+				year:    0,
+				hour:    0,
+				minute:  0,
+				second:  2,
+				days:    2.0 / 3600.0 / 24.0,
+				hours:   2.0 / 3600.0,
+				minutes: 2.0 / 60.0,
+				seconds: 2.0,
+			},
+		},
+		{
+			input: "1m/4",
+			expected: datetime{
+				kind:    duration,
+				ts:      0*24*3600 + 0*3600 + 0*60 + 15,
+				day:     0,
+				month:   0,
+				year:    0,
+				hour:    0,
+				minute:  0,
+				second:  15,
+				days:    15.0 / 3600.0 / 24.0,
+				hours:   15.0 / 3600.0,
+				minutes: 15.0 / 60.0,
+				seconds: 15.0,
+			},
+		},
 	}
 
 	for _, ts := range tests {
-		ts.expected.dt = time.Date(ts.expected.year,
-			time.Month(ts.expected.month),
-			ts.expected.day,
-			ts.expected.hour,
-			ts.expected.minute,
-			ts.expected.second,
-			0,
-			time.UTC)
-
 		ts.expected.parameter = ts.input
 		result, _ := parse(ts.input)
 
 		// ignore parameter modifications
 		result.parameter = ts.input
+
+		// ignore datetime.ds
+		result.dt = ts.expected.dt
 
 		if result != ts.expected {
 			t.Logf(">>> Result NOK for input: >%s<\n", ts.input)

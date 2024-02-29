@@ -86,21 +86,43 @@ func getItems(dt datetime, err error) Items {
 		},
 	}
 
+	outputItemFormatsNumber := []outputItemFormat{
+		{
+			title: "Result",
+			formatFunc: func(dt datetime) string {
+				format := "%d"
+				return fmt.Sprintf(format, dt.ts)
+			},
+		},
+	}
+
 	items := Items{
 		Skipknowldedge: true,
 	}
 
 	// Skip any output if error
 	if err == nil {
-		for _, v := range outputItemFormats {
-			item := Item{
-				Title:    fmt.Sprintf("%s", v.title),
-				Subtitle: v.formatFunc(dt),
-				Arg:      v.formatFunc(dt),
+		if dt.kind == number {
+			for _, v := range outputItemFormatsNumber {
+				item := Item{
+					Title:    fmt.Sprintf("%s", v.title),
+					Subtitle: v.formatFunc(dt),
+					Arg:      v.formatFunc(dt),
+				}
+				items.Items = append(items.Items, item)
 			}
+		} else {
 
-			items.Items = append(items.Items, item)
+			for _, v := range outputItemFormats {
+				item := Item{
+					Title:    fmt.Sprintf("%s", v.title),
+					Subtitle: v.formatFunc(dt),
+					Arg:      v.formatFunc(dt),
+				}
+				items.Items = append(items.Items, item)
+			}
 		}
+
 	} else {
 		item := Item{
 			Uid:      "Error",
@@ -112,7 +134,6 @@ func getItems(dt datetime, err error) Items {
 			},
 		}
 		items.Items = append(items.Items, item)
-
 	}
 
 	item := Item{

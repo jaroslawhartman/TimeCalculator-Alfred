@@ -8,6 +8,7 @@ import (
 	"time"
 )
 
+// what operation we're doing?
 const (
 	add = iota
 	sub
@@ -29,7 +30,16 @@ type parser struct {
 	parseNext      bool
 }
 
+// datetime kind
+const (
+	none      = 0
+	timestamp = 1 << (iota - 1)
+	duration
+	number
+)
+
 type datetime struct {
+	kind                          int
 	parameter                     string
 	dt                            time.Time
 	ts                            int64 // no of seconds
@@ -90,17 +100,62 @@ func (dt *datetime) updateDT(source int) {
 
 func (dt *datetime) calculateDT(dt1 datetime, dt2 datetime, operation int) {
 	if operation == add {
-		dt.ts = dt2.ts + dt1.ts
+		dt.ts = dt1.ts + dt2.ts
+
+		if dt1.kind == dt2.kind {
+			dt.kind = dt1.kind
+		} else if (dt1.kind & duration) == (dt2.kind & duration) {
+			dt.kind = duration
+		}
 	} else if operation == sub {
-		dt.ts = dt2.ts - dt1.ts
+		dt.ts = dt1.ts - dt2.ts
+		if (dt1.kind & duration) == (dt2.kind & duration) {
+			dt.kind = duration
+		}
 	} else if operation == mul {
-		dt.ts = dt2.ts * dt1.ts
+		dt.ts = dt1.ts * dt2.ts
+		if (dt1.kind & duration) == (dt2.kind & number) {
+			dt.kind = duration
+		}
 	} else if operation == div {
 		if dt1.ts != 0 {
-			dt.ts = dt2.ts / dt1.ts
+			dt.ts = dt1.ts / dt2.ts
 		} else {
 			dt.ts = dt1.ts
 		}
+
+		// fmt.Printf("Kinds: dt1 %d, dt2 %d\n", dt1.kind, dt2.kind)
+
+		// 60 / 15s ->  4 (number) ??
+		// (number) / (duration) = (number)
+
+		if (dt1.kind&number != 0) && (dt2.kind&number != 0) {
+			// 60 / 15 ->  4 (number) ??
+			// (number) / (number) = (number)
+			dt.kind = number
+			// fmt.Printf("(2) Kind set to : %d\n", dt.kind)
+		} else if (dt1.kind&duration != 0) && (dt2.kind&number != 0) {
+			// 1h / 4   -> 15m
+			// (duration) / (number) = (duration)
+			dt.kind = duration
+			// fmt.Printf("(3) Kind set to : %d\n", dt.kind)
+		} else if (dt1.kind&duration != 0) && (dt2.kind&duration != 0) {
+			// 1h / 15m -> 4 (number)
+			// (duration) / (duration) = (number)
+			dt.kind = number
+			// fmt.Printf("(1) Kind set to : %d\n", dt.kind)
+		}
+
+		// if (dt1.kind&number == 0) && (dt2.kind&duration != 0) {
+		// 	dt.kind = duration
+		// 	fmt.Printf("(1) Kind set to : %d\n", dt.kind)
+		// } else if (dt1.kind&duration != 0) && (dt2.kind&number != 0) {
+		// 	dt.kind = duration
+		// 	fmt.Printf("(2) Kind set to : %d\n", dt.kind)
+		// } else if (dt1.kind&duration != 0) && (dt2.kind&duration != 0) {
+		// 	dt.kind = number
+		// 	fmt.Printf("(3) Kind set to : %d\n", dt.kind)
+		// }
 	}
 
 	dt.updateDT(ts)
@@ -136,6 +191,7 @@ func parseField(f string, dt *datetime) error {
 			noOfParameters: 1,
 			parserFunc: func(match []string, dt *datetime) {
 				dt.second = Atoi(match[1])
+				dt.kind = number | duration
 			},
 		},
 		//   - `<mm:ss>`
@@ -145,6 +201,7 @@ func parseField(f string, dt *datetime) error {
 			parserFunc: func(match []string, dt *datetime) {
 				dt.minute = Atoi(match[1])
 				dt.second = Atoi(match[2])
+				dt.kind = duration
 			},
 		},
 		//   - `<hh:mm:ss>`
@@ -155,8 +212,18 @@ func parseField(f string, dt *datetime) error {
 				dt.hour = Atoi(match[1])
 				dt.minute = Atoi(match[2])
 				dt.second = Atoi(match[3])
+				dt.kind = duration
 			},
 		},
+		// {
+		// 	regex:          `([0-9]+)u`,
+		// 	noOfParameters: 1,
+		// 	parserFunc: func(match []string, dt *datetime) {
+		// 		i := Atoi(match[1])
+		// 		dt.ts += int64(time.Unix(i, 0))
+		// 		dt.kind = timestamp
+		// 	},
+		// },
 		// Passers below needs to be ad the end
 		// to support fields like 1d1h1s
 		//   - `<d+>d`
@@ -165,6 +232,7 @@ func parseField(f string, dt *datetime) error {
 			noOfParameters: 1,
 			parserFunc: func(match []string, dt *datetime) {
 				dt.day += Atoi(match[1])
+				dt.kind = duration
 			},
 			parseNext: true,
 		},
@@ -174,6 +242,7 @@ func parseField(f string, dt *datetime) error {
 			noOfParameters: 1,
 			parserFunc: func(match []string, dt *datetime) {
 				dt.hour += Atoi(match[1])
+				dt.kind = duration
 			},
 			parseNext: true,
 		},
@@ -183,6 +252,7 @@ func parseField(f string, dt *datetime) error {
 			noOfParameters: 1,
 			parserFunc: func(match []string, dt *datetime) {
 				dt.minute += Atoi(match[1])
+				dt.kind = duration
 			},
 			parseNext: true,
 		},
@@ -192,6 +262,7 @@ func parseField(f string, dt *datetime) error {
 			noOfParameters: 1,
 			parserFunc: func(match []string, dt *datetime) {
 				dt.second += Atoi(match[1])
+				dt.kind = duration
 			},
 			parseNext: true,
 		},
@@ -243,6 +314,7 @@ func parse(p string) (datetime, error) {
 		return result, errors.New("nothing to calculate")
 	case 1:
 		result := datetime{
+			kind:      none,
 			parameter: p,
 		}
 
@@ -250,28 +322,10 @@ func parse(p string) (datetime, error) {
 			return result, nil
 		}
 	case 2:
-		dt1 := datetime{
-			parameter: p,
-		}
-
-		if err := parseField(fields[0], &dt1); err != nil {
-			return dt1, nil
-		}
-
-		dt2 := datetime{
-			parameter: p,
-		}
-
-		if err := parseField(fields[1], &dt2); err != nil {
-			return dt2, nil
-		}
-
 		result := datetime{
 			parameter: p,
 		}
-
-		result.calculateDT(dt2, dt1, sub)
-		return result, nil
+		return result, errors.New("missing operator")
 	case 3:
 		dt1 := datetime{
 			parameter: p,
@@ -294,13 +348,13 @@ func parse(p string) (datetime, error) {
 		}
 
 		if fields[1] == "+" {
-			result.calculateDT(dt2, dt1, add)
+			result.calculateDT(dt1, dt2, add)
 		} else if fields[1] == "-" {
-			result.calculateDT(dt2, dt1, sub)
+			result.calculateDT(dt1, dt2, sub)
 		} else if fields[1] == "*" {
-			result.calculateDT(dt2, dt1, mul)
+			result.calculateDT(dt1, dt2, mul)
 		} else if fields[1] == "/" {
-			result.calculateDT(dt2, dt1, div)
+			result.calculateDT(dt1, dt2, div)
 		} else {
 			return result, errors.New("allowed format: <field> <op> <field> where op = +-")
 		}
