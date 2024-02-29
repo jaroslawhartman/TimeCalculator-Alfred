@@ -31,45 +31,57 @@ type Item struct {
 type outputItemFormat struct {
 	title      string
 	format     string
-	formatFunc func(f string, dt datetime) string
+	formatFunc func(dt datetime) string
 }
 
 func getItems(dt datetime, err error) Items {
 
 	outputItemFormats := []outputItemFormat{
 		{
-			title:  "Result",
-			format: "%d days, %d hours, %d minutes and %d seconds",
-			formatFunc: func(f string, dt datetime) string {
-				return fmt.Sprintf(f, dt.day, dt.hour, dt.minute, dt.second)
+			title: "Result",
+			formatFunc: func(dt datetime) string {
+				format := "%d days, %d hours, %d minutes and %d seconds"
+				return fmt.Sprintf(format, dt.day, dt.hour, dt.minute, dt.second)
 			},
 		},
 		{
-			title:  "In days",
-			format: "%.2f days",
-			formatFunc: func(f string, dt datetime) string {
-				return fmt.Sprintf(f, dt.days)
+			title: "Result (hh:mm:ss)",
+			formatFunc: func(dt datetime) string {
+				if dt.day == 0 {
+					format := "%02d:%02d:%02d"
+					return fmt.Sprintf(format, dt.hour, dt.minute, dt.second)
+				} else {
+					format := "%dd, %02d:%02d:%02d"
+					return fmt.Sprintf(format, dt.day, dt.hour, dt.minute, dt.second)
+				}
 			},
 		},
 		{
-			title:  "In hours",
-			format: "%.2f hours",
-			formatFunc: func(f string, dt datetime) string {
-				return fmt.Sprintf(f, dt.hours)
+			title: "In days",
+			formatFunc: func(dt datetime) string {
+				format := "%.2f days"
+				return fmt.Sprintf(format, dt.days)
 			},
 		},
 		{
-			title:  "In minutes",
-			format: "%.2f minutes",
-			formatFunc: func(f string, dt datetime) string {
-				return fmt.Sprintf(f, dt.minutes)
+			title: "In hours",
+			formatFunc: func(dt datetime) string {
+				format := "%.2f hours"
+				return fmt.Sprintf(format, dt.hours)
 			},
 		},
 		{
-			title:  "In seconds",
-			format: "%.0f seconds",
-			formatFunc: func(f string, dt datetime) string {
-				return fmt.Sprintf(f, dt.seconds)
+			title: "In minutes",
+			formatFunc: func(dt datetime) string {
+				format := "%.2f minutes"
+				return fmt.Sprintf(format, dt.minutes)
+			},
+		},
+		{
+			title: "In seconds",
+			formatFunc: func(dt datetime) string {
+				format := "%.0f seconds"
+				return fmt.Sprintf(format, dt.seconds)
 			},
 		},
 	}
@@ -83,8 +95,8 @@ func getItems(dt datetime, err error) Items {
 		for _, v := range outputItemFormats {
 			item := Item{
 				Title:    fmt.Sprintf("%s", v.title),
-				Subtitle: v.formatFunc(v.format, dt),
-				Arg:      v.formatFunc(v.format, dt),
+				Subtitle: v.formatFunc(dt),
+				Arg:      v.formatFunc(dt),
 			}
 
 			items.Items = append(items.Items, item)
