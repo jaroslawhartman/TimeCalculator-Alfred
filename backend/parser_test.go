@@ -139,12 +139,13 @@ func TestParseField(t *testing.T) {
 	}
 
 	for _, ts := range tests {
-		ts.expected.dt = time.Date(ts.expected.year,
+		ts.expected.dt = time.Date(
+			int(ts.expected.year),
 			time.Month(ts.expected.month),
-			ts.expected.day,
-			ts.expected.hour,
-			ts.expected.minute,
-			ts.expected.second,
+			int(ts.expected.day),
+			int(ts.expected.hour),
+			int(ts.expected.minute),
+			int(ts.expected.second),
 			0,
 			time.UTC)
 

@@ -36,7 +36,7 @@ type outputItemFormat struct {
 
 func getItems(dt datetime, err error) Items {
 
-	outputItemFormats := []outputItemFormat{
+	outputItemFormatsDuration := []outputItemFormat{
 		{
 			title: "Result",
 			formatFunc: func(dt datetime) string {
@@ -96,6 +96,16 @@ func getItems(dt datetime, err error) Items {
 		},
 	}
 
+	outputItemFormatsTimestamp := []outputItemFormat{
+		{
+			title: "Result",
+			formatFunc: func(dt datetime) string {
+				format := "%v"
+				return fmt.Sprintf(format, dt.dt)
+			},
+		},
+	}
+
 	items := Items{
 		Skipknowldedge: true,
 	}
@@ -111,9 +121,18 @@ func getItems(dt datetime, err error) Items {
 				}
 				items.Items = append(items.Items, item)
 			}
-		} else {
+		} else if dt.kind == duration {
 
-			for _, v := range outputItemFormats {
+			for _, v := range outputItemFormatsDuration {
+				item := Item{
+					Title:    fmt.Sprintf("%s", v.title),
+					Subtitle: v.formatFunc(dt),
+					Arg:      v.formatFunc(dt),
+				}
+				items.Items = append(items.Items, item)
+			}
+		} else if dt.kind == timestamp {
+			for _, v := range outputItemFormatsTimestamp {
 				item := Item{
 					Title:    fmt.Sprintf("%s", v.title),
 					Subtitle: v.formatFunc(dt),

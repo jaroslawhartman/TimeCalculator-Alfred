@@ -16,11 +16,13 @@ const (
 	div
 )
 
+// source
 // when invoking updateDT, what is the "source of truth"
 // to update other fields
 const (
 	ts     = iota // dt.ts
 	ymdhms        // dt.year, month, day, hour, minute & second firld
+	ds
 )
 
 type parser struct {
@@ -43,8 +45,8 @@ type datetime struct {
 	parameter                     string
 	dt                            time.Time
 	ts                            int64 // no of seconds
-	day, month, year              int
-	hour, minute, second          int
+	day, month, year              int64
+	hour, minute, second          int64
 	days, hours, minutes, seconds float32
 }
 
@@ -58,11 +60,11 @@ func Atof(f string) float32 {
 	}
 }
 
-func Atoi(f string) int {
-	if s, err := strconv.Atoi(f); err == nil {
+func Atoi(f string) int64 {
+	if s, err := strconv.ParseInt(f, 10, 64); err == nil {
 		return s
 	} else {
-		return 0.0
+		return 0
 	}
 }
 
@@ -75,6 +77,9 @@ func (dt *datetime) updateDT(source int) {
 		dt.ts = s
 	} else if source == ts {
 		s = dt.ts
+	} else if source == ds {
+		// do nothing
+		return
 	}
 
 	// calculating durations in units as below
@@ -87,25 +92,34 @@ func (dt *datetime) updateDT(source int) {
 	// i.e. minute = 65 will become hour = 1 and minute = 5
 
 	n := dt.ts
-	dt.second = int(n)
-	dt.day = int(n / (24 * 3600))
+	dt.second = n
+	dt.day = n / (24 * 3600)
 	n %= (24 * 3600)
-	dt.hour = int(n / 3600)
+	dt.hour = n / 3600
 	n %= 3600
-	dt.minute = int(n / 60)
+	dt.minute = n / 60
 	dt.second %= 60
 
-	dt.dt = time.Date(dt.year, time.Month(dt.month), dt.day, dt.hour, dt.minute, dt.second, 0, time.UTC)
+	dt.dt = time.Date(int(dt.year), time.Month(dt.month), int(dt.day), int(dt.hour), int(dt.minute), int(dt.second), 0, time.UTC)
 }
 
 func (dt *datetime) calculateDT(dt1 datetime, dt2 datetime, operation int) {
 	if operation == add {
-		dt.ts = dt1.ts + dt2.ts
 
 		if dt1.kind == dt2.kind {
 			dt.kind = dt1.kind
+			dt.ts = dt1.ts + dt2.ts
 		} else if (dt1.kind & duration) == (dt2.kind & duration) {
 			dt.kind = duration
+			dt.ts = dt1.ts + dt2.ts
+		} else if (dt1.kind&timestamp != 0) && (dt2.kind&duration != 0) {
+			dt.kind = timestamp
+			dt.dt = dt1.dt
+			dt.dt = dt.dt.Add(time.Second * time.Duration(dt2.second))
+			dt.dt = dt.dt.Add(time.Minute * time.Duration(dt2.minute))
+			dt.dt = dt.dt.Add(time.Hour * time.Duration(dt2.hour))
+			dt.dt = dt.dt.Add(time.Hour * time.Duration(dt2.day*24))
+			return
 		}
 	} else if operation == sub {
 		dt.ts = dt1.ts - dt2.ts
@@ -192,6 +206,10 @@ func parseField(f string, dt *datetime) error {
 			parserFunc: func(match []string, dt *datetime) {
 				dt.second = Atoi(match[1])
 				dt.kind = number | duration
+
+				// updateDT needs to calculate:
+				// - ts, days, hours, minutes, seconds
+				dt.updateDT(ymdhms)
 			},
 		},
 		//   - `<mm:ss>`
@@ -202,6 +220,8 @@ func parseField(f string, dt *datetime) error {
 				dt.minute = Atoi(match[1])
 				dt.second = Atoi(match[2])
 				dt.kind = duration
+
+				dt.updateDT(ymdhms)
 			},
 		},
 		//   - `<hh:mm:ss>`
@@ -213,17 +233,27 @@ func parseField(f string, dt *datetime) error {
 				dt.minute = Atoi(match[2])
 				dt.second = Atoi(match[3])
 				dt.kind = duration
+
+				dt.updateDT(ymdhms)
 			},
 		},
-		// {
-		// 	regex:          `([0-9]+)u`,
-		// 	noOfParameters: 1,
-		// 	parserFunc: func(match []string, dt *datetime) {
-		// 		i := Atoi(match[1])
-		// 		dt.ts += int64(time.Unix(i, 0))
-		// 		dt.kind = timestamp
-		// 	},
-		// },
+		{
+			regex:          `^([0-9]+)u$`,
+			noOfParameters: 1,
+			parserFunc: func(match []string, dt *datetime) {
+				i := Atoi(match[1])
+				dt.dt = time.Unix(i, 0)
+				dt.kind = timestamp
+			},
+		},
+		{
+			regex:          `now`,
+			noOfParameters: 0,
+			parserFunc: func(match []string, dt *datetime) {
+				dt.dt = time.Now().Round(time.Second)
+				dt.kind = timestamp
+			},
+		},
 		// Passers below needs to be ad the end
 		// to support fields like 1d1h1s
 		//   - `<d+>d`
@@ -233,6 +263,8 @@ func parseField(f string, dt *datetime) error {
 			parserFunc: func(match []string, dt *datetime) {
 				dt.day += Atoi(match[1])
 				dt.kind = duration
+
+				dt.updateDT(ymdhms)
 			},
 			parseNext: true,
 		},
@@ -243,6 +275,8 @@ func parseField(f string, dt *datetime) error {
 			parserFunc: func(match []string, dt *datetime) {
 				dt.hour += Atoi(match[1])
 				dt.kind = duration
+
+				dt.updateDT(ymdhms)
 			},
 			parseNext: true,
 		},
@@ -253,6 +287,8 @@ func parseField(f string, dt *datetime) error {
 			parserFunc: func(match []string, dt *datetime) {
 				dt.minute += Atoi(match[1])
 				dt.kind = duration
+
+				dt.updateDT(ymdhms)
 			},
 			parseNext: true,
 		},
@@ -263,6 +299,8 @@ func parseField(f string, dt *datetime) error {
 			parserFunc: func(match []string, dt *datetime) {
 				dt.second += Atoi(match[1])
 				dt.kind = duration
+
+				dt.updateDT(ymdhms)
 			},
 			parseNext: true,
 		},
@@ -278,9 +316,7 @@ func parseField(f string, dt *datetime) error {
 			// parserFunc will get only:
 			//  - day, hour, minute, second
 			p.parserFunc(match, dt)
-			// updateDT needs to calculate:
-			// - ts, days, hours, minutes, seconds
-			dt.updateDT(ymdhms)
+
 			if !p.parseNext {
 				return nil
 			}

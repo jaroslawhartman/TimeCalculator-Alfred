@@ -32,6 +32,9 @@ Date component formats `<date>`:
      - `<MM>/<DD>`
      - `<MM>/<DD>/<YYYY>`
 
+Timestamp component formats `<ts>`:
+ - [X] Unix timestamp `<dddddddddd>u`, e.g. `1709420400u`
+
 Compount duration component `<period>`:
  -  [X] `<d>d<h>h<m>m<s>s` - in any order
  -  [X] Any component can be ommited, e.g. `1d4h`
@@ -50,6 +53,8 @@ Number component `<number>` represents:
     - [ ] `td <date> <time> <OP> <time>`
     - [X] `td <time> <OP> <period>`
     - [ ] `td <date> <time> <OP> <period>`
+    - [X] `td <timestamp> <OP> <period>`
+    - [X] `td <timestamp> <OP> <time>`
 - Span calculations, where `<OP>` can be `*` or `/`:
     - [ ] `td <time> <OP> <number>`
 
