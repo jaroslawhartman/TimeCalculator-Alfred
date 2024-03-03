@@ -166,10 +166,7 @@ if [[ "$?" == 137 ]]
 then
 	open bin
 	echo "permission"
-fi
-
-echo $DATE_FORMAT &gt;&gt; /tmp/td.log
-echo "&gt;$query&lt;" &gt;&gt; /tmp/td.log</string>
+fi</string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
 				<key>scriptfile</key>
@@ -275,29 +272,23 @@ echo "&gt;$query&lt;" &gt;&gt; /tmp/td.log</string>
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>concurrently</key>
+				<key>lastpathcomponent</key>
 				<false/>
-				<key>escaping</key>
-				<integer>102</integer>
-				<key>script</key>
-				<string>query="{query}"
-
-echo -n $query
-
-echo "zzz $query" &gt;&gt; /tmp/td.log</string>
-				<key>scriptargtype</key>
-				<integer>0</integer>
-				<key>scriptfile</key>
-				<string></string>
-				<key>type</key>
-				<integer>0</integer>
+				<key>onlyshowifquerypopulated</key>
+				<true/>
+				<key>removeextension</key>
+				<false/>
+				<key>text</key>
+				<string>{query}</string>
+				<key>title</key>
+				<string>Time copied to clipboard!</string>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.action.script</string>
+			<string>alfred.workflow.output.notification</string>
 			<key>uid</key>
-			<string>16039760-F173-4AB8-9C73-DA7401D5DE23</string>
+			<string>0208042E-BB77-4369-8A05-416BE601F18B</string>
 			<key>version</key>
-			<integer>2</integer>
+			<integer>1</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -321,23 +312,29 @@ echo "zzz $query" &gt;&gt; /tmp/td.log</string>
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>lastpathcomponent</key>
+				<key>concurrently</key>
 				<false/>
-				<key>onlyshowifquerypopulated</key>
-				<true/>
-				<key>removeextension</key>
-				<false/>
-				<key>text</key>
-				<string>{query}</string>
-				<key>title</key>
-				<string>Time copied to clipboard!</string>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>script</key>
+				<string>query="{query}"
+
+echo -n $query
+
+echo "zzz $query" &gt;&gt; /tmp/td.log</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>0</integer>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.output.notification</string>
+			<string>alfred.workflow.action.script</string>
 			<key>uid</key>
-			<string>0208042E-BB77-4369-8A05-416BE601F18B</string>
+			<string>16039760-F173-4AB8-9C73-DA7401D5DE23</string>
 			<key>version</key>
-			<integer>1</integer>
+			<integer>2</integer>
 		</dict>
 	</array>
 	<key>readme</key>
@@ -515,7 +512,7 @@ Configurations:
 	<key>variablesdontexport</key>
 	<array/>
 	<key>version</key>
-	<string>1.0.4</string>
+	<string>1.0.5</string>
 	<key>webaddress</key>
 	<string>http://jhartman.pl/tc</string>
 </dict>
