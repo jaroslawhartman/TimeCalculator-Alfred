@@ -56,6 +56,19 @@
 				<false/>
 			</dict>
 		</array>
+		<key>45753B57-B348-421E-940D-1539B1F91044</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>69FCE376-F599-4A19-ADBD-31ABFB7B3107</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
 		<key>775298B5-87CE-4958-AE52-3FEEC0CCEEF1</key>
 		<array>
 			<dict>
@@ -272,23 +285,29 @@ fi</string>
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>lastpathcomponent</key>
+				<key>concurrently</key>
 				<false/>
-				<key>onlyshowifquerypopulated</key>
-				<true/>
-				<key>removeextension</key>
-				<false/>
-				<key>text</key>
-				<string>{query}</string>
-				<key>title</key>
-				<string>Time copied to clipboard!</string>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>script</key>
+				<string>query="{query}"
+
+echo -n $query
+
+echo "zzz $query" &gt;&gt; /tmp/td.log</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>0</integer>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.output.notification</string>
+			<string>alfred.workflow.action.script</string>
 			<key>uid</key>
-			<string>0208042E-BB77-4369-8A05-416BE601F18B</string>
+			<string>16039760-F173-4AB8-9C73-DA7401D5DE23</string>
 			<key>version</key>
-			<integer>1</integer>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -312,16 +331,54 @@ fi</string>
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>lastpathcomponent</key>
+				<false/>
+				<key>onlyshowifquerypopulated</key>
+				<true/>
+				<key>removeextension</key>
+				<false/>
+				<key>text</key>
+				<string>{query}</string>
+				<key>title</key>
+				<string>Time copied to clipboard!</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.notification</string>
+			<key>uid</key>
+			<string>0208042E-BB77-4369-8A05-416BE601F18B</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>2</integer>
+				<key>keyword</key>
+				<string>{var:search_keyword} upgrade</string>
+				<key>subtext</key>
+				<string>Normall, new versions are checked every 7 days</string>
+				<key>text</key>
+				<string>Check for a newer version</string>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.keyword</string>
+			<key>uid</key>
+			<string>45753B57-B348-421E-940D-1539B1F91044</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
 				<key>concurrently</key>
 				<false/>
 				<key>escaping</key>
-				<integer>102</integer>
+				<integer>0</integer>
 				<key>script</key>
-				<string>query="{query}"
-
-echo -n $query
-
-echo "zzz $query" &gt;&gt; /tmp/td.log</string>
+				<string>./oneUpdater.sh 0</string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
 				<key>scriptfile</key>
@@ -332,7 +389,7 @@ echo "zzz $query" &gt;&gt; /tmp/td.log</string>
 			<key>type</key>
 			<string>alfred.workflow.action.script</string>
 			<key>uid</key>
-			<string>16039760-F173-4AB8-9C73-DA7401D5DE23</string>
+			<string>69FCE376-F599-4A19-ADBD-31ABFB7B3107</string>
 			<key>version</key>
 			<integer>2</integer>
 		</dict>
@@ -414,6 +471,20 @@ Configurations:
 			<real>420</real>
 			<key>ypos</key>
 			<real>410</real>
+		</dict>
+		<key>45753B57-B348-421E-940D-1539B1F91044</key>
+		<dict>
+			<key>xpos</key>
+			<real>40</real>
+			<key>ypos</key>
+			<real>615</real>
+		</dict>
+		<key>69FCE376-F599-4A19-ADBD-31ABFB7B3107</key>
+		<dict>
+			<key>xpos</key>
+			<real>270</real>
+			<key>ypos</key>
+			<real>615</real>
 		</dict>
 		<key>775298B5-87CE-4958-AE52-3FEEC0CCEEF1</key>
 		<dict>
@@ -512,7 +583,7 @@ Configurations:
 	<key>variablesdontexport</key>
 	<array/>
 	<key>version</key>
-	<string>1.0.5</string>
+	<string>1.0.6</string>
 	<key>webaddress</key>
 	<string>http://jhartman.pl/tc</string>
 </dict>

@@ -334,7 +334,7 @@ func parseField(f string, dt *datetime) error {
 
 func parse(p string) (datetime, error) {
 	// As later input string will be split using space(s)
-	// ensure there IS a space around the operator
+	// ensure there IS at least one space around the operator
 	// So accept: 3+4 or 3 + 4
 	for _, c := range []string{"+", "-", "*", "/"} {
 		p = strings.ReplaceAll(p, c, " "+c+" ")
