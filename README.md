@@ -39,7 +39,7 @@ Compount duration component `<period>`:
 
 Number component `<number>` represents:
  -  [X] Number of seconds `60`
- -  [ ] A number for Span calculations `*` or `/`
+ -  [X] A number for Span calculations `*` or `/`
 
 
 ## Valid queries
@@ -54,7 +54,7 @@ Number component `<number>` represents:
     - [X] `td <timestamp> <OP> <period>`
     - [X] `td <timestamp> <OP> <time>`
 - Span calculations, where `<OP>` can be `*` or `/`:
-    - [ ] `td <time> <OP> <number>`
+    - [X] `td <time> <OP> <number>`
 
 
 ## Output:
