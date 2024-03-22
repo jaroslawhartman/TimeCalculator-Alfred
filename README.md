@@ -1,8 +1,6 @@
 # Time (and date) difference
 (Yet) another time/date diff workflow for Alfred
 
-**WORK IN PROGRESS -- NOTHING USEFUL YET**
-
 # Design and Requirements
 
 Below list of requirements and design considerations
